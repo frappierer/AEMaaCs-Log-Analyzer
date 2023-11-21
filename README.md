@@ -24,7 +24,7 @@ The AEM Log Analyzer is a powerful tool for processing and analyzing Adobe Exper
 2. Place your AEM access log files in a specified folder. eg. "AEM Access logs"
 3. Edit the folder path in py script (folder_path = '/Users/martinaltmann/Downloads/AEM Access logs)
 4. Run the script to process the log files.
-5. Analyze the generated Excel file for insights.
+5. The Excel will have three sheets. Summary, Users, IP Addresses. 
 
 ### Screenshots
 
