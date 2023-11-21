@@ -2,7 +2,7 @@
 
 ## Overview
 
-The AEM Log Analyzer is a powerful tool for processing and analyzing Adobe Experience Manager (AEM) access logs. It helps IT consultants and web administrators gain valuable insights from log data, enabling data-driven decision-making and optimization of AEM sites.
+The AEM Log Analyzer is a powerful tool for processing and analyzing Adobe Experience Manager (AEM) Author access logs. It helps IT consultants and web administrators gain valuable insights from log data, enabling data-driven decision-making and optimization of AEM sites.
 
 ## Features
 
