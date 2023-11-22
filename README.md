@@ -2,13 +2,13 @@
 
 ## Overview
 
-The AEM Log Analyzer is a powerful tool for processing and analyzing Adobe Experience Manager (AEM) Author access logs. It helps IT consultants and web administrators gain valuable insights from log data, enabling data-driven decision-making and optimization of AEM sites.
+The AEM Log Analyzer is a powerful tool for processing and analyzing Adobe Experience Manager (AEM) Author access logs into an Excel file. It helps IT consultants and web administrators gain valuable insights from log data, enabling data-driven decision-making and optimization of AEM sites.
 
 ## Features
 
 - **Log Parsing**: Parse AEM access logs to extract essential information.
 - **User and IP Analysis**: Track unique users and IP addresses over time.
-- **Request Trends**: Visualize request trends with interactive graphs.
+- **Request Trends**: Visualize request trends with daily graphs.
 - **Excel Export**: Export analyzed data to Excel for further analysis.
 
 ## Getting Started
@@ -22,7 +22,7 @@ The AEM Log Analyzer is a powerful tool for processing and analyzing Adobe Exper
 
 1. Download the request logs. Eg. Go the https://experience.adobe.com/#/@client/cloud-manager/landing.html and download the logs. (Should be something like author_aemaccess_2023-11-14.log)
 2. Place your AEM access log files in a specified folder. eg. "AEM Access logs"
-3. Edit the folder path in py script (folder_path = '/Users/martinaltmann/Downloads/AEM Access logs)
+3. Edit the folder path in py script (folder_path = '/Users/blabla/Downloads/AEM Access logs)
 4. Run the script to process the log files.
 5. The Excel will have three sheets. Summary, Users, IP Addresses. 
 
