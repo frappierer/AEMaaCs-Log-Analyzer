@@ -28,7 +28,7 @@ The AEM Log Analyzer is a powerful tool for processing and analyzing Adobe Exper
 
 ### Screenshots
 
-<img width="1558" alt="image" src="https://github.com/frappierer/AEMaaCs-Log-Analyzer/assets/4376185/7af1932c-bd2a-471b-b48d-66350bfe8387">
+<img width="1417" alt="image" src="https://github.com/frappierer/AEMaaCs-Log-Analyzer/assets/4376185/78fcfda1-825e-49ce-98a2-3e11eb2e0473">
 
 <img width="1162" alt="image" src="https://github.com/frappierer/AEMaaCs-Log-Analyzer/assets/4376185/57428c0c-de6e-4646-8bf0-ccbb9a735908">
 
