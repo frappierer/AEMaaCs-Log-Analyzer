@@ -16,8 +16,7 @@ def parse_log_entry(line):
 def process_log_files(folder_path):
     daily_users = defaultdict(set)
     daily_ips = defaultdict(set)
-    daily_user_activity = defaultdict(lambda: defaultdict(int))
-    daily_ip_activity = defaultdict(lambda: defaultdict(int))
+    hourly_activity = defaultdict(lambda: defaultdict(int))
     
     for filename in os.listdir(folder_path):
         if filename.startswith("author_aemaccess_") and filename.endswith(".log"):
@@ -25,41 +24,48 @@ def process_log_files(folder_path):
                 for line in file:
                     user, ip, timestamp = parse_log_entry(line)
                     date = timestamp.date()
+                    hour = timestamp.hour
                     daily_users[date].add(user)
                     daily_ips[date].add(ip)
-                    daily_user_activity[date][user] += 1
-                    daily_ip_activity[date][ip] += 1
+                    hourly_activity[date][hour] += 1
 
-    return daily_users, daily_ips, daily_user_activity, daily_ip_activity
+    return daily_users, daily_ips, hourly_activity
 
-def plot_user_activity(user_activity, plot_filename='user_activity.jpg'):
-    dates = list(user_activity.keys())
-    counts = [sum(v.values()) for v in user_activity.values()] # Sum per day
+def plot_hourly_activity(hourly_activity, plot_filename='hourly_activity.jpg'):
+    num_days = len(hourly_activity)
+    plt.figure(figsize=(15, 3 * num_days))
+    
+    for i, (date, hours) in enumerate(sorted(hourly_activity.items())):
+        times = list(range(24))
+        counts = [hours[h] for h in times]
+        
+        plt.subplot(num_days, 1, i + 1)
+        plt.plot(times, counts, marker='o', label=f'Date: {date}')
+        plt.xlabel('Hour of Day')
+        plt.ylabel('Number of Requests')
+        plt.title(f'Hourly Requests on {date}')
+        plt.xticks(times)
+        plt.legend()
+        plt.grid(True)
 
-    plt.figure(figsize=(10, 5))
-    plt.plot(dates, counts, marker='o')
-    plt.xlabel('Date')
-    plt.ylabel('Number of Requests')
-    plt.title('Total Requests Over Time')
-    plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(plot_filename)
     plt.close()
 
-def create_excel(daily_users, daily_ips, daily_user_activity, daily_ip_activity, plot_filename):
+def create_excel(daily_users, daily_ips, hourly_activity, plot_filename):
     summary_data = []
     for date in daily_users:
-        summary_data.append([date, len(daily_users[date]), len(daily_ips[date]), sum(daily_user_activity[date].values())])
+        total_requests = sum(hourly_activity[date].values())
+        summary_data.append([date, len(daily_users[date]), len(daily_ips[date]), total_requests])
 
-    # Flatten the dictionaries into sorted lists of tuples for DataFrame
-    users_data = sorted(
-        [(date, user, daily_user_activity[date][user]) for date in daily_user_activity for user in daily_user_activity[date]],
-        key=lambda x: (x[0], -x[2])  # Sort by date, then by number of requests descending
-    )
-    ips_data = sorted(
-        [(date, ip, daily_ip_activity[date][ip]) for date in daily_ip_activity for ip in daily_ip_activity[date]],
-        key=lambda x: (x[0], -x[2])  # Sort by date, then by number of requests descending
-    )
+    # Flatten hourly_activity for detailed user and IP data
+    users_data = []
+    ips_data = []
+    for date, hours in hourly_activity.items():
+        for user in daily_users[date]:
+            users_data.append([date, user, sum(hours.values())])
+        for ip in daily_ips[date]:
+            ips_data.append([date, ip, sum(hours.values())])
 
     # Create DataFrames
     df_summary = pd.DataFrame(summary_data, columns=['Date', 'Number of Unique Users', 'Unique IP Addresses', 'Total Requests'])
@@ -81,8 +87,8 @@ def create_excel(daily_users, daily_ips, daily_user_activity, daily_ip_activity,
     book.save(excel_filename)
 
 folder_path = '/Users/martinaltmann/Downloads/AEM Access logs'
-daily_users, daily_ips, daily_user_activity, daily_ip_activity = process_log_files(folder_path)
+daily_users, daily_ips, hourly_activity = process_log_files(folder_path)
 
-plot_filename = 'user_activity.jpg'
-plot_user_activity(daily_user_activity, plot_filename)
-create_excel(daily_users, daily_ips, daily_user_activity, daily_ip_activity, plot_filename)
+plot_filename = 'hourly_activity.jpg'
+plot_hourly_activity(hourly_activity, plot_filename)
+create_excel(daily_users, daily_ips, hourly_activity, plot_filename)
